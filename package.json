@@ -9,8 +9,7 @@
     "dev": "nodemon server/index.js",
     "build": "echo 'Ready to deploy'",
     "test": "echo 'Running tests'",
-    "client": "python -m http.server 3000 --directory client",
-    "all": "concurrently \"npm run dev\" \"npm run client\""
+    "client": "python -m http.server 3000 --directory client"
   },
   "keywords": [
     "chat",
@@ -34,7 +33,6 @@
     "helmet": "^7.0.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.22",
-    "concurrently": "^8.0.1"
+    "nodemon": "^2.0.22"
   }
 }
