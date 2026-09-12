@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>تواصل بوك - Tawasol Book</title>
+    <!-- ربط ملف الـ Manifest لتحويله لتطبيق أندرويد -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1e3c72">
+    <meta name="description" content="تطبيق محادثات عربي حديث - Arabic Chat Application">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="تواصل بوك">
+    
+    <style>
+        :root {
+            --primary-bg: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            --chat-bg: #f5f7fa;
+            --message-sent: #2a5298;
+            --message-received: #ffffff;
+            --text-light: #ffffff;
+            --text-dark: #333333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: #e4e8f0;
+            overflow: hidden;
+        }
+
+        /* القائمة الجانبية (جهات الاتصال) */
+        #sidebar {
+            width: 100%;
+            max-width: 350px;
+            background: #ffffff;
+            border-left: 1px solid #ddd;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            background: var(--primary-bg);
+            color: var(--text-light);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            font-size: 24px;
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 50%;
+        }
+
+        .contacts-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .contact-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .contact-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .contact-item.active {
+            background-color: #e3f2fd;
+            border-right: 4px solid #2a5298;
+        }
+
+        .contact-avatar {
+            width: 45px;
+            height: 45px;
+            background: var(--primary-bg);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        .contact-info h4 {
+            font-size: 14px;
+            color: #333;
+        }
+
+        /* منطقة المحادثة */
+        #chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--chat-bg);
+        }
+
+        /* إخفاء المحادثة في الموبايل حتى يتم اختيار جهة اتصال */
+        @media (max-width: 768px) {
+            #chat-area {
+                display: none;
+                position: absolute;
+                top: 0; left: 0; right: 0; bottom: 0;
+                z-index: 10;
+            }
+            .show-chat #sidebar {
+                display: none;
+            }
+            .show-chat #chat-area {
+                display: flex;
+            }
+        }
+
+        .chat-header {
+            background: #ffffff;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .chat-header-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-actions button {
+            background: none;
+            border: none;
+            font-size: 20px;
+            margin-right: 15px;
+            color: #2a5298;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .header-actions button:hover {
+            transform: scale(1.1);
+        }
+
+        .messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .message {
+            max-width: 75%;
+            padding: 10px 15px;
+            border-radius: 15px;
+            font-size: 15px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+            word-wrap: break-word;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.sent {
+            background: var(--message-sent);
+            color: var(--text-light);
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+
+        .message.received {
+            background: var(--message-received);
+            color: var(--text-dark);
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+            border: 1px solid #ddd;
+        }
+
+        .chat-input {
+            padding: 15px;
+            background: #ffffff;
+            display: flex;
+            gap: 10px;
+            align-items: flex-end;
+            border-top: 1px solid #ddd;
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 12px 20px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+            font-size: 15px;
+            resize: none;
+            max-height: 100px;
+        }
+
+        .chat-input button {
+            background: var(--primary-bg);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+
+        .chat-input button:hover {
+            transform: scale(1.05);
+        }
+
+        .chat-input button:active {
+            transform: scale(0.95);
+        }
+        
+        .back-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px 10px;
+            color: #2a5298;
+        }
+        
+        @media (max-width: 768px) {
+            .back-btn { 
+                display: block;
+                margin-right: 10px;
+            }
+            
+            .message {
+                max-width: 85%;
+            }
+        }
+
+        /* مؤشر الكتابة */
+        .typing-indicator {
+            display: flex;
+            gap: 5px;
+            padding: 10px 15px;
+            background: #e8eef7;
+            border-radius: 15px;
+            width: fit-content;
+            align-self: flex-start;
+        }
+
+        .typing-indicator span {
+            width: 8px;
+            height: 8px;
+            background: #999;
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.6;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        /* Scrollbar Styling */
+        .contacts-list::-webkit-scrollbar,
+        .messages::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .contacts-list::-webkit-scrollbar-track,
+        .messages::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .contacts-list::-webkit-scrollbar-thumb,
+        .messages::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+
+        .contacts-list::-webkit-scrollbar-thumb:hover,
+        .messages::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- القائمة الجانبية -->
+    <div id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-icon">💬</div>
+            <h2>تواصل بوك</h2>
+        </div>
+        <div class="contacts-list" id="contacts-list">
+            <!-- مستخدمون تجريبيون -->
+            <div class="contact-item active" data-user="أحمد" onclick="openChat('أحمد', 'أ')">
+                <div class="contact-avatar">أ</div>
+                <div class="contact-info">
+                    <h4>أحمد</h4>
+                    <p style="color: #888; font-size: 13px;">متاح</p>
+                </div>
+            </div>
+            <div class="contact-item" data-user="مريم" onclick="openChat('مريم', 'م')">
+                <div class="contact-avatar">م</div>
+                <div class="contact-info">
+                    <h4>مريم</h4>
+                    <p style="color: #888; font-size: 13px;">في اجتماع</p>
+                </div>
+            </div>
+            <div class="contact-item" data-user="سارة" onclick="openChat('سارة', 'س')">
+                <div class="contact-avatar">س</div>
+                <div class="contact-info">
+                    <h4>سارة</h4>
+                    <p style="color: #888; font-size: 13px;">متاح</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- شاشة المحادثة -->
+    <div id="chat-area">
+        <div class="chat-header">
+            <div class="chat-header-info">
+                <button class="back-btn" onclick="closeChat()">←</button>
+                <h3 id="chat-title">اسم المستخدم</h3>
+            </div>
+            <div class="header-actions">
+                <button title="مكالمة فيديو" onclick="showNotification('مكالمات الفيديو قريباً')">🎥</button>
+                <button title="مكالمة صوتية" onclick="showNotification('المكالمات الصوتية قريباً')">📞</button>
+                <button title="تلخيص الذكاء الاصطناعي" onclick="showNotification('التلخيص قريباً')">⚡</button>
+            </div>
+        </div>
+        <div class="messages" id="messages-container">
+            <div class="message received">أهلاً بك في تواصل بوك! 🚀</div>
+        </div>
+        <div class="chat-input">
+            <button title="تحسين النص بالذكاء الاصطناعي" onclick="showNotification('تحسين النص قريباً')">🪄</button>
+            <input type="text" id="message-input" placeholder="اكتب رسالتك هنا..." onkeypress="handleKeyPress(event)">
+            <button onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+
+    <script>
+        // متغيرات عامة
+        let currentUser = 'أحمد';
+        let messagesData = {};
+
+        // تحميل البيانات المحفوظة عند فتح الصفحة
+        function loadMessages() {
+            const savedData = localStorage.getItem('tawasol-messages');
+            if (savedData) {
+                messagesData = JSON.parse(savedData);
+            } else {
+                // رسائل افتراضية
+                messagesData = {
+                    'أحمد': [
+                        { text: 'أهلاً بك في تواصل بوك! 🚀', type: 'received' }
+                    ],
+                    'مريم': [
+                        { text: 'أهلاً بك في تواصل بوك! 🚀', type: 'received' }
+                    ],
+                    'سارة': [
+                        { text: 'أهلاً بك في تواصل بوك! 🚀', type: 'received' }
+                    ]
+                };
+            }
+        }
+
+        // حفظ البيانات
+        function saveMessages() {
+            localStorage.setItem('tawasol-messages', JSON.stringify(messagesData));
+        }
+
+        // فتح محادثة مع مستخدم
+        function openChat(name, avatar) {
+            currentUser = name;
+            document.getElementById('chat-title').innerText = name;
+            
+            // تحديث العنصر النشط في القائمة الجانبية
+            document.querySelectorAll('.contact-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.dataset.user === name) {
+                    item.classList.add('active');
+                }
+            });
+
+            // إذا لم يكن لدينا رسائل لهذا المستخدم، أنشئ مجموعة جديدة
+            if (!messagesData[name]) {
+                messagesData[name] = [
+                    { text: 'أهلاً بك في تواصل بوك! 🚀', type: 'received' }
+                ];
+            }
+
+            // عرض الرسائل
+            displayMessages();
+            
+            // إظهار منطقة المحادثة في الموبايل
+            document.body.classList.add('show-chat');
+            
+            // تركيز على حقل الإدخال
+            setTimeout(() => {
+                document.getElementById('message-input').focus();
+            }, 100);
+        }
+
+        // إغلاق المحادثة
+        function closeChat() {
+            document.body.classList.remove('show-chat');
+        }
+
+        // عرض الرسائل
+        function displayMessages() {
+            const container = document.getElementById('messages-container');
+            container.innerHTML = '';
+
+            if (messagesData[currentUser] && messagesData[currentUser].length > 0) {
+                messagesData[currentUser].forEach(msg => {
+                    const msgDiv = document.createElement('div');
+                    msgDiv.className = `message ${msg.type}`;
+                    msgDiv.innerText = msg.text;
+                    container.appendChild(msgDiv);
+                });
+            } else {
+                const welcomeMsg = document.createElement('div');
+                welcomeMsg.className = 'message received';
+                welcomeMsg.innerText = 'أهلاً بك في تواصل بوك! 🚀';
+                container.appendChild(welcomeMsg);
+            }
+
+            // التمرير للأسفل
+            container.scrollTop = container.scrollHeight;
+        }
+
+        // إرسال الرسالة
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const messagesContainer = document.getElementById('messages-container');
+
+            if (input.value.trim() !== '') {
+                const userMessage = input.value;
+
+                // إضافة رسالة المستخدم
+                const msgDiv = document.createElement('div');
+                msgDiv.className = 'message sent';
+                msgDiv.innerText = userMessage;
+                messagesContainer.appendChild(msgDiv);
+
+                // حفظ الرسالة
+                if (!messagesData[currentUser]) {
+                    messagesData[currentUser] = [];
+                }
+                messagesData[currentUser].push({ text: userMessage, type: 'sent' });
+                saveMessages();
+
+                input.value = '';
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                // إضافة مؤشر الكتابة
+                const typingDiv = document.createElement('div');
+                typingDiv.className = 'typing-indicator';
+                typingDiv.innerHTML = '<span></span><span></span><span></span>';
+                messagesContainer.appendChild(typingDiv);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+                // محاكاة رد من الطرف الآخر
+                setTimeout(() => {
+                    // إزالة مؤشر الكتابة
+                    messagesContainer.removeChild(typingDiv);
+
+                    // الرسائل الافتراضية للرد
+                    const replies = [
+                        'حسناً، شكراً لك! 👍',
+                        'أوافق معك تماماً ✨',
+                        'هذا رأي ذكي جداً 🧠',
+                        'أنا أحب هذه الفكرة 💡',
+                        'سأفكر في الأمر 🤔',
+                        'شكراً على المشاركة 🙏',
+                        'ممتاز! هل تريد المزيد؟ 😊'
+                    ];
+
+                    const randomReply = replies[Math.floor(Math.random() * replies.length)];
+
+                    const replyDiv = document.createElement('div');
+                    replyDiv.className = 'message received';
+                    replyDiv.innerText = randomReply;
+                    messagesContainer.appendChild(replyDiv);
+
+                    // حفظ الرد
+                    messagesData[currentUser].push({ text: randomReply, type: 'received' });
+                    saveMessages();
+
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }, 1500);
+            }
+        }
+
+        // معالجة الضغط على Enter
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        // إظهار إشعار
+        function showNotification(message) {
+            alert(message);
+        }
+
+        // تحميل الرسائل المحفوظة عند بدء التطبيق
+        window.addEventListener('load', () => {
+            loadMessages();
+            displayMessages();
+
+            // تسجيل Service Worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js').then(reg => {
+                    console.log('✅ تم تفعيل التطبيق بنجاح!', reg);
+                }).catch(err => {
+                    console.log('⚠️ حدث خطأ في التسجيل:', err);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
