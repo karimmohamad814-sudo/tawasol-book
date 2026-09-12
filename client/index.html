@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#7c3aed">
+    <meta name="description" content="تطبيق تواصل بوك - تطبيق مراسلة فورية عربي احترافي">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="تواصل بوك">
+    
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%237c3aed' width='100' height='100' rx='20'/><text x='50' y='65' font-size='60' font-weight='bold' fill='white' text-anchor='middle' font-family='Arial'>TS</text></svg>">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect fill='%237c3aed' width='180' height='180' rx='40'/><text x='90' y='125' font-size='100' font-weight='bold' fill='white' text-anchor='middle' font-family='Arial'>TS</text></svg>">
+    
+    <title>تواصل بوك - Tawasol Book</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="css/chat.css">
+    <link rel="stylesheet" href="css/calls.css">
+    <link rel="stylesheet" href="css/groups.css">
+</head>
+<body>
+    <div id="app-container">
+        <!-- Auth Pages -->
+        <div id="auth-container" class="page active">
+            <!-- Login Page -->
+            <div id="login-page" class="auth-page active">
+                <div class="auth-box">
+                    <div class="logo-large">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <rect fill="#7c3aed" width="100" height="100" rx="20"/>
+                            <text x="50" y="65" font-size="60" font-weight="bold" fill="white" text-anchor="middle" font-family="Arial">TS</text>
+                        </svg>
+                    </div>
+                    <h1>تواصل بوك</h1>
+                    <p class="subtitle">تطبيق مراسلة فورية عربي احترافي</p>
+                    
+                    <form id="login-form">
+                        <div class="form-group">
+                            <label for="login-email">البريد الإلكتروني</label>
+                            <input type="email" id="login-email" placeholder="أدخل بريدك الإلكتروني" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="login-password">كلمة المرور</label>
+                            <input type="password" id="login-password" placeholder="أدخل كلمة المرور" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">تسجيل الدخول</button>
+                    </form>
+                    
+                    <div class="auth-footer">
+                        <p>ليس لديك حساب؟ <a href="#" onclick="switchAuthPage('register')">إنشاء حساب جديد</a></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Register Page -->
+            <div id="register-page" class="auth-page">
+                <div class="auth-box">
+                    <div class="logo-medium">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <rect fill="#7c3aed" width="100" height="100" rx="20"/>
+                            <text x="50" y="65" font-size="60" font-weight="bold" fill="white" text-anchor="middle" font-family="Arial">TS</text>
+                        </svg>
+                    </div>
+                    <h1>إنشاء حساب جديد</h1>
+                    
+                    <form id="register-form">
+                        <div class="form-group">
+                            <label for="register-name">اسم المستخدم</label>
+                            <input type="text" id="register-name" placeholder="أدخل اسمك الكامل" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-email">البريد الإلكتروني</label>
+                            <input type="email" id="register-email" placeholder="أدخل بريدك الإلكتروني" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-password">كلمة المرور</label>
+                            <input type="password" id="register-password" placeholder="أدخل كلمة المرور" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-confirm-password">تأكيد كلمة المرور</label>
+                            <input type="password" id="register-confirm-password" placeholder="أكد كلمة المرور" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="register-avatar">صورة شخصية (اختياري)</label>
+                            <input type="file" id="register-avatar" accept="image/*">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-full">إنشاء الحساب</button>
+                    </form>
+                    
+                    <div class="auth-footer">
+                        <p>لديك حساب بالفعل؟ <a href="#" onclick="switchAuthPage('login')">تسجيل الدخول</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main App -->
+        <div id="main-app" class="page">
+            <!-- Sidebar -->
+            <aside id="sidebar" class="sidebar">
+                <div class="sidebar-header">
+                    <div class="logo-icon">
+                        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <rect fill="#7c3aed" width="100" height="100" rx="20"/>
+                            <text x="50" y="65" font-size="60" font-weight="bold" fill="white" text-anchor="middle" font-family="Arial">TS</text>
+                        </svg>
+                    </div>
+                    <h2>تواصل بوك</h2>
+                </div>
+                
+                <div class="sidebar-search">
+                    <input type="text" id="search-input" placeholder="🔍 ابحث عن مستخدم...">
+                </div>
+                
+                <nav class="sidebar-nav">
+                    <button class="nav-btn active" data-view="chats">
+                        <span class="icon">💬</span>
+                        <span class="label">المحادثات</span>
+                    </button>
+                    <button class="nav-btn" data-view="contacts">
+                        <span class="icon">👥</span>
+                        <span class="label">جهات الاتصال</span>
+                    </button>
+                    <button class="nav-btn" data-view="groups">
+                        <span class="icon">👨‍👩‍👧‍👦</span>
+                        <span class="label">الجروبات</span>
+                    </button>
+                </nav>
+                
+                <div id="chats-list" class="sidebar-content">
+                    <!-- Chat items will be loaded here -->
+                </div>
+                
+                <div id="contacts-list" class="sidebar-content hidden">
+                    <!-- Contacts will be loaded here -->
+                </div>
+                
+                <div id="groups-list" class="sidebar-content hidden">
+                    <!-- Groups will be loaded here -->
+                </div>
+                
+                <div class="sidebar-footer">
+                    <button id="create-group-btn" class="btn btn-small">+ إنشاء جروب</button>
+                    <button id="profile-btn" class="btn btn-icon">⚙️</button>
+                    <button id="logout-btn" class="btn btn-icon">🚪</button>
+                </div>
+            </aside>
+            
+            <!-- Main Content Area -->
+            <main id="main-content" class="main-content">
+                <!-- Chat View -->
+                <div id="chat-view" class="view active">
+                    <div id="empty-state" class="empty-state">
+                        <div class="empty-icon">💬</div>
+                        <h2>اختر محادثة للبدء</h2>
+                        <p>اختر محادثة من القائمة الجانبية أو ابحث عن مستخدم جديد</p>
+                    </div>
+                    
+                    <div id="chat-container" class="chat-container hidden">
+                        <div class="chat-header">
+                            <button id="chat-back-btn" class="btn btn-icon">←</button>
+                            <div class="chat-header-info">
+                                <div class="chat-avatar">
+                                    <img id="chat-avatar-img" src="" alt="avatar">
+                                </div>
+                                <div>
+                                    <h3 id="chat-name"></h3>
+                                    <p id="chat-status" class="status"></p>
+                                </div>
+                            </div>
+                            <div class="chat-actions">
+                                <button id="call-btn" class="btn btn-icon" title="مكالمة صوتية">☎️</button>
+                                <button id="video-call-btn" class="btn btn-icon" title="مكالمة فيديو">📹</button>
+                                <button id="info-btn" class="btn btn-icon" title="معلومات">ℹ️</button>
+                            </div>
+                        </div>
+                        
+                        <div id="messages-container" class="messages-container">
+                            <!-- Messages will be loaded here -->
+                        </div>
+                        
+                        <div class="message-input-area">
+                            <input type="text" id="message-input" placeholder="اكتب رسالة..." autocomplete="off">
+                            <button id="send-btn" class="btn btn-icon">➤</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Contacts View -->
+                <div id="contacts-view" class="view">
+                    <div class="view-header">
+                        <h2>جهات الاتصال</h2>
+                        <button class="btn btn-small">+ إضافة</button>
+                    </div>
+                    <div id="contacts-container" class="contacts-container">
+                        <!-- Contacts will be loaded here -->
+                    </div>
+                </div>
+                
+                <!-- Groups View -->
+                <div id="groups-view" class="view">
+                    <div class="view-header">
+                        <h2>الجروبات</h2>
+                        <button id="create-group-btn-2" class="btn btn-small">+ إنشاء جروب</button>
+                    </div>
+                    <div id="groups-container" class="groups-container">
+                        <!-- Groups will be loaded here -->
+                    </div>
+                </div>
+            </main>
+        </div>
+        
+        <!-- Call Screen -->
+        <div id="call-screen" class="page">
+            <div class="call-container">
+                <div class="call-header">
+                    <h2 id="call-user-name"></h2>
+                    <p id="call-duration">00:00</p>
+                </div>
+                
+                <div class="call-video-area">
+                    <video id="local-video" autoplay muted playsinline></video>
+                    <video id="remote-video" autoplay playsinline></video>
+                </div>
+                
+                <div class="call-controls">
+                    <button id="toggle-audio-btn" class="btn btn-control active" title="إيقاف الصوت">
+                        <span class="icon">🔊</span>
+                    </button>
+                    <button id="toggle-video-btn" class="btn btn-control active" title="إيقاف الفيديو">
+                        <span class="icon">📹</span>
+                    </button>
+                    <button id="end-call-btn" class="btn btn-danger" title="إنهاء المكالمة">
+                        <span class="icon">📴</span>
+                    </button>
+                    <button id="toggle-screen-btn" class="btn btn-control" title="مشاركة الشاشة">
+                        <span class="icon">🖥️</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Incoming Call Modal -->
+        <div id="incoming-call-modal" class="modal hidden">
+            <div class="modal-content call-modal">
+                <div class="call-avatar-large">
+                    <img id="incoming-call-avatar" src="" alt="avatar">
+                </div>
+                <h2 id="incoming-call-name"></h2>
+                <p class="call-type" id="incoming-call-type">مكالمة فيديو</p>
+                <div class="incoming-call-actions">
+                    <button id="accept-call-btn" class="btn btn-success">✓ قبول</button>
+                    <button id="reject-call-btn" class="btn btn-danger">✕ رفض</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Profile Modal -->
+        <div id="profile-modal" class="modal hidden">
+            <div class="modal-content profile-modal">
+                <div class="modal-header">
+                    <h2>ملفي الشخصي</h2>
+                    <button class="close-btn" onclick="closeModal('profile-modal')">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="profile-avatar-section">
+                        <img id="profile-avatar" src="" alt="profile" class="profile-avatar">
+                        <input type="file" id="change-avatar-input" accept="image/*" class="hidden">
+                        <button id="change-avatar-btn" class="btn btn-small">تغيير الصورة</button>
+                    </div>
+                    <div class="profile-form">
+                        <div class="form-group">
+                            <label>الاسم</label>
+                            <input type="text" id="profile-name" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>البريد الإلكتروني</label>
+                            <input type="email" id="profile-email" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label>الحالة</label>
+                            <input type="text" id="profile-status" placeholder="أضف حالتك">
+                        </div>
+                        <button id="save-profile-btn" class="btn btn-primary btn-full">حفظ التغييرات</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Group Details Modal -->
+        <div id="group-modal" class="modal hidden">
+            <div class="modal-content group-modal">
+                <div class="modal-header">
+                    <h2>تفاصيل الجروب</h2>
+                    <button class="close-btn" onclick="closeModal('group-modal')">✕</button>
+                </div>
+                <div class="modal-body">
+                    <div class="group-avatar-section">
+                        <img id="group-avatar" src="" alt="group" class="profile-avatar">
+                    </div>
+                    <div class="group-info">
+                        <h3 id="group-name"></h3>
+                        <p id="group-members-count"></p>
+                    </div>
+                    <div class="group-members">
+                        <h4>الأعضاء</h4>
+                        <div id="group-members-list" class="members-list">
+                            <!-- Members will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="group-actions">
+                        <button id="add-member-btn" class="btn btn-small">+ إضافة عضو</button>
+                        <button id="leave-group-btn" class="btn btn-danger btn-full">مغادرة الجروب</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Notifications -->
+        <div id="notifications-container" class="notifications-container"></div>
+    </div>
+    
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/chat.js"></script>
+    <script src="js/calls.js"></script>
+    <script src="js/groups.js"></script>
+    <script src="js/socket.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

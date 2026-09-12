@@ -1,0 +1,67 @@
+{
+  "name": "تواصل بوك - Tawasol Book",
+  "short_name": "تواصل بوك",
+  "description": "تطبيق مراسلة فورية عربي احترافي مع دعم المكالمات والجروبات",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#ffffff",
+  "theme_color": "#7c3aed",
+  "dir": "rtl",
+  "lang": "ar",
+  "categories": ["productivity", "social"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%237c3aed' width='192' height='192' rx='40'/><text x='96' y='135' font-size='100' font-weight='bold' fill='white' text-anchor='middle' font-family='Arial'>TS</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%237c3aed' width='512' height='512' rx='100'/><text x='256' y='380' font-size='280' font-weight='bold' fill='white' text-anchor='middle' font-family='Arial'>TS</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect fill='%237c3aed' width='540' height='720'/><text x='270' y='360' font-size='100' fill='white' text-anchor='middle' font-family='Arial'>تواصل بوك</text></svg>",
+      "sizes": "540x720",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "فتح المحادثات",
+      "short_name": "محادثات",
+      "description": "اتصل بأصدقائك الآن",
+      "url": "/?action=chats",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%237c3aed' width='192' height='192' rx='40'/><text x='96' y='135' font-size='100' font-weight='bold' fill='white' text-anchor='middle' font-family='Arial'>TS</text></svg>",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ],
+  "share_target": {
+    "action": "/?action=share",
+    "method": "POST",
+    "enctype": "multipart/form-data",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url",
+      "files": [
+        {
+          "name": "media",
+          "accept": ["image/png", "image/jpeg", "image/gif"]
+        }
+      ]
+    }
+  }
+}
