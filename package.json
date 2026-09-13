@@ -7,7 +7,7 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "nodemon server/index.js",
-    "build": "npm rnu build",
+    "build": "npm run build",
     "test": "echo 'Running tests'",
     "client": "python -m http.server 3000 --directory client"
   },
