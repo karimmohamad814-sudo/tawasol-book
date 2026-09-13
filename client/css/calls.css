@@ -1,0 +1,248 @@
+.calls-screen {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background: #1f2937;
+}
+
+.call-status {
+    text-align: center;
+    padding: 2rem;
+    color: white;
+}
+
+.call-status-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.call-status-description {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.call-duration {
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+    margin: 2rem 0;
+    font-family: 'Courier New', monospace;
+}
+
+.video-container {
+    flex: 1;
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    overflow: hidden;
+}
+
+.video-window {
+    flex: 1;
+    background: #000;
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+}
+
+.video-window video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.video-placeholder-icon {
+    font-size: 64px;
+    opacity: 0.5;
+}
+
+.local-video {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+    width: 150px;
+    height: 150px;
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 2px solid white;
+}
+
+.local-video video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.call-controls {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.call-button {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    transition: all 0.3s ease;
+    color: white;
+}
+
+.call-button:hover {
+    transform: scale(1.1);
+}
+
+.call-button:active {
+    transform: scale(0.95);
+}
+
+.call-button.mute {
+    background: rgba(107, 114, 128, 0.7);
+}
+
+.call-button.mute:hover {
+    background: rgba(107, 114, 128, 0.9);
+}
+
+.call-button.mute.active {
+    background: #ef4444;
+}
+
+.call-button.video {
+    background: rgba(107, 114, 128, 0.7);
+}
+
+.call-button.video:hover {
+    background: rgba(107, 114, 128, 0.9);
+}
+
+.call-button.video.active {
+    background: #ef4444;
+}
+
+.call-button.speaker {
+    background: rgba(107, 114, 128, 0.7);
+}
+
+.call-button.speaker:hover {
+    background: rgba(107, 114, 128, 0.9);
+}
+
+.call-button.speaker.active {
+    background: #ef4444;
+}
+
+.call-button.end {
+    background: #ef4444;
+}
+
+.call-button.end:hover {
+    background: #dc2626;
+}
+
+.call-button.accept {
+    background: #10b981;
+}
+
+.call-button.accept:hover {
+    background: #059669;
+}
+
+.call-incoming {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.call-incoming-content {
+    text-align: center;
+    color: white;
+}
+
+.call-incoming-avatar {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    margin: 0 auto 2rem;
+}
+
+.call-incoming-name {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.call-incoming-type {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.7);
+    margin-bottom: 3rem;
+}
+
+.call-incoming-actions {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.call-incoming-actions .call-button {
+    width: 80px;
+    height: 80px;
+    font-size: 36px;
+}
+
+@media (max-width: 768px) {
+    .video-container {
+        flex-direction: column;
+    }
+    
+    .local-video {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .call-incoming-avatar {
+        width: 80px;
+        height: 80px;
+        font-size: 32px;
+    }
+    
+    .call-incoming-name {
+        font-size: 24px;
+    }
+}
